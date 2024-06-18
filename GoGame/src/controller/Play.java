@@ -13,6 +13,9 @@ public class Play {
     public static Register register;
     public static User user;
     public static MainMenu mainMenu;
+    public static WaitingRoomStatus waitingRoomStatus;
+    public static RoomList roomList;
+    public static JoinRoomPassword joinRoomPassword;
     public static Message  message;
     public static SocketHandle socketHandle;
     
@@ -59,10 +62,10 @@ public class Play {
                     mainMenu = new MainMenu();
                     mainMenu.setVisible(true);
                     break;
-//                case ROOM_LIST:
-//                    roomListFrm = new RoomListFrm();
-//                    roomListFrm.setVisible(true);
-//                    break;
+                case ROOM_LIST:
+                    roomList = new RoomList();
+                    roomList.setVisible(true);
+                    break;
 //                case FRIEND_LIST:
 //                    friendListFrm = new FriendListFrm();
 //                    friendListFrm.setVisible(true);
@@ -95,19 +98,19 @@ public class Play {
         }
     }
     
-//    public static void openView(View viewName, int arg1, String arg2) {
-//        if (viewName != null) {
-//            switch (viewName) {
-//                case JOIN_ROOM_PASSWORD:
-//                    joinRoomPasswordFrm = new JoinRoomPasswordFrm(arg1, arg2);
-//                    joinRoomPasswordFrm.setVisible(true);
-//                    break;
+    public static void openView(View viewName, int arg1, String arg2) {
+        if (viewName != null) {
+            switch (viewName) {
+                case JOIN_ROOM:
+                    joinRoomPassword = new JoinRoomPassword(arg1, arg2);
+                    joinRoomPassword.setVisible(true);
+                    break;
 //                case FRIEND_REQUEST:
 //                    friendRequestFrm = new FriendRequestFrm(arg1, arg2);
 //                    friendRequestFrm.setVisible(true);
-//            }
-//        }
-//    }
+            }
+        }
+    }
 
 //    public static void openView(View viewName, User competitor, int room_ID, int isStart, String competitorIP) {
 //        if (viewName == View.GAME_CLIENT) {
@@ -231,8 +234,8 @@ public class Play {
         ROOM_LIST,
         FIND_ROOM,
         WAITING_ROOM,
-        CREATE_ROOM_PASSWORD,
-        JOIN_ROOM_PASSWORD,
+        CREATE_ROOM,
+        JOIN_ROOM,
         FRIEND_LIST,
         GAME_CLIENT,
         COMPETITOR_INFO,

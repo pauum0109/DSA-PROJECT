@@ -55,7 +55,7 @@ public class SocketHandle implements Runnable {
     public void run() {
 
         try {
-            String ipconfig = "192.168.0.100";
+            String ipconfig = "192.168.0.102";
             socket = new Socket(ipconfig, 1111);
             System.out.println("Connect sucessfull");
             outputWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -192,14 +192,14 @@ public class SocketHandle implements Runnable {
 //                            , competitorIP);
 //                    Client.gameClientFrm.newgame();
 //                }
-//                //Tạo phòng và server trả về tên phòng
-//                if (messageSplit[0].equals("your-created-room")) {
-//                    Client.closeAllViews();
-//                    Client.openView(Client.View.WAITING_ROOM);
-//                    Client.waitingRoomFrm.setRoomName(messageSplit[1]);
-//                    if (messageSplit.length == 3)
-//                        Client.waitingRoomFrm.setRoomPassword("Mật khẩu phòng: " + messageSplit[2]);
-//                }
+                //Create room
+                if (messageSplit[0].equals("your-created-room")) {
+                    Play.closeAllViews();
+                    Play.openView(Play.View.WAITING_ROOM);
+                    Play.waitingRoomStatus.setRoomName(messageSplit[1]);
+                    if (messageSplit.length == 3)
+                        Play.waitingRoomStatus.setRoomPassword("Password: " + messageSplit[2]);
+                }
 //                //Xử lý yêu cầu kết bạn tới
 //                if (messageSplit[0].equals("make-friend-request")) {
 //                    int ID = Integer.parseInt(messageSplit[1]);

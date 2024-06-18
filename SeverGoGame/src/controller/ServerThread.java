@@ -130,7 +130,7 @@ public class ServerThread implements Runnable{
         userConnected = new UserConnected();
         isClosed = false;
         room = null;
-        String ipconfig = "192.168.0.100";
+        String ipconfig = "192.168.0.102";
 
         if (this.SocketServer.getInetAddress().getHostAddress().equals(ipconfig)) {
             clientIP = ipconfig;
@@ -271,14 +271,15 @@ public class ServerThread implements Runnable{
                 
                 //Create room
                 if (messageSplit[0].equals("create-room")) {
-                    setRoom(new Room(this));
+                    room = new Room(this);
                     if (messageSplit.length == 2) {
-                        getRoom().setPassword(messageSplit[1]);
+                        getRoom().setPassword(messageSplit[2]);
                         write("your-created-room," + getRoom().getId() + "," + messageSplit[1]);
-                        System.out.println("Tạo phòng mới thành công, password là " + messageSplit[1]);
-                    } else {
+                        System.out.println("Create sucessfull, password is " + messageSplit[1]);
+                    } 
+                    else {
                         write("your-created-room," + getRoom().getId());
-                        System.out.println("Tạo phòng mới thành công");
+                        System.out.println("Create sucessfull");
                     }
                     userConnected.updateToPlaying(this.getUser().getID());
                 }

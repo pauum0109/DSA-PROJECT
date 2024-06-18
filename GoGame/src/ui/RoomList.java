@@ -1,22 +1,68 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ui;
+
+import controller.Play;
+import java.io.IOException;
+import java.util.*;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author alice
  */
 public class RoomList extends javax.swing.JFrame {
-
-    /**
-     * Creates new form RoomList
-     */
+    private Vector<String> listRoom;
+    private Vector<String> listPassword;
+    private boolean isPlayThread;
+    private final boolean isFiltered;
+    DefaultTableModel defaultTableModel;
+    
     public RoomList() {
-        initComponents();
+        this.setTitle("Go Game");
+        this.setIconImage(new ImageIcon("/resources/logo.png").getImage());
+        this.setResizable(false);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        defaultTableModel = (DefaultTableModel) roomTextArea.getModel();
+        isPlayThread = true;
+        isFiltered = false;
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                while (Play.roomList.isDisplayable() && isPlayThread && !isFiltered) {
+                    try {
+                        Play.socketHandle.write("view-room-list,");
+                        Thread.sleep(1000);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                    } catch (InterruptedException ex) {
+                        JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+                    }
+                }
+            }
+        };
+        thread.start();
     }
 
+    
+    public void updateRoomList(Vector<String> listData, Vector<String> listPassword) {
+        this.listRoom = listData;
+        this.listPassword = listPassword;
+        defaultTableModel.setRowCount(0);
+        ImageIcon imageIcon;
+        for (int i = 0; i < listRoom.size(); i++) {
+            if (listPassword.get(i).equals(" "))
+                imageIcon = new ImageIcon("/resources/swords-1-mini.png");
+            else
+                imageIcon = new ImageIcon("/resources/swords-1-lock-mini.png");
+            defaultTableModel.addRow(new Object[]{
+                    listRoom.get(i),
+                    imageIcon
+            });
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +72,118 @@ public class RoomList extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        roomListLabel = new javax.swing.JLabel();
+        closeButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Object[][] rows = {
+        };
+        String[] columns = {"Room name",""};
+        DefaultTableModel model = new DefaultTableModel(rows, columns){
+            @Override
+            public Class<?> getColumnClass(int column){
+                switch(column){
+                    case 0: return String.class;
+                    case 1: return ImageIcon.class;
+                    default: return Object.class;
+                }
+            }
+        };
+        roomTextArea = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+
+        roomListLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        roomListLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        roomListLabel.setText("ROOM LIST");
+
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/close3.png"))); // NOI18N
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(131, 131, 131)
+                .addComponent(roomListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(roomListLabel)
+                .addContainerGap(15, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        roomTextArea.setModel(model);
+        roomTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                roomTextAreaMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(roomTextArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 7, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        Play.closeView(Play.View.ROOM_LIST);
+        Play.openView(Play.View.MAIN_MENU);
+    }//GEN-LAST:event_closeButtonActionPerformed
+
+    private void roomTextAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roomTextAreaMouseClicked
+        if (roomTextArea.getSelectedRow() == -1) {
+        } else {
+            try {
+                isPlayThread = false;
+                int index = roomTextArea.getSelectedRow();
+                int room = Integer.parseInt(listRoom.get(index).split(" ")[1]);
+                String password = listPassword.get(index);
+                if (password.equals(" ")) {
+                    Play.socketHandle.write("join-room," + room);
+                    Play.closeView(Play.View.ROOM_LIST);
+                } else {
+                    Play.closeView(Play.View.ROOM_LIST);
+                    Play.openView(Play.View.JOIN_ROOM, room, password);
+                }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_roomTextAreaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -78,5 +221,10 @@ public class RoomList extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton closeButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel roomListLabel;
+    private javax.swing.JTable roomTextArea;
     // End of variables declaration//GEN-END:variables
 }
