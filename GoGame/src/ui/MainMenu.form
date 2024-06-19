@@ -296,7 +296,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane1" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="TypingFrame" min="-2" pref="540" max="-2" attributes="0"/>
+                          <Component id="messageTextField" min="-2" pref="540" max="-2" attributes="0"/>
                           <EmptySpace pref="9" max="32767" attributes="0"/>
                           <Component id="SendButton" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -313,7 +313,7 @@
                   <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="TypingFrame" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="messageTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="SendButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="23" max="32767" attributes="0"/>
@@ -351,7 +351,10 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="TypingFrame">
+        <Component class="javax.swing.JTextField" name="messageTextField">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="messageTextFieldKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="SendButton">
           <Properties>
@@ -360,6 +363,9 @@
               <Color id="Default Cursor"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SendButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -396,11 +402,9 @@
                   </Group>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="BlitzMode" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="NormalMode" max="32767" attributes="0"/>
-                          <Component id="ComputerMode" max="32767" attributes="0"/>
-                          <Component id="CorrespondingMode" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="NormalMode" alignment="0" max="32767" attributes="0"/>
+                      <Component id="ComputerMode" alignment="0" max="32767" attributes="0"/>
+                      <Component id="CorrespondingMode" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="49" pref="49" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -488,16 +492,25 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Rank List"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RankListActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="LogOut">
           <Properties>
             <Property name="text" type="java.lang.String" value="Log Out"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LogOutActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="Exit">
           <Properties>
             <Property name="text" type="java.lang.String" value="Exit"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ExitActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="BlitzMode">
           <Properties>

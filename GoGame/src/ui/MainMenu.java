@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ui;
 
 import controller.Play;
+import java.io.IOException;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
@@ -14,9 +12,6 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public class MainMenu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainMenu
-     */
     public MainMenu() {
         initComponents();
         this.setTitle("Go Game");
@@ -68,7 +63,7 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ChatBox = new javax.swing.JTextArea();
-        TypingFrame = new javax.swing.JTextField();
+        messageTextField = new javax.swing.JTextField();
         SendButton = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         createRoom = new javax.swing.JButton();
@@ -220,8 +215,19 @@ public class MainMenu extends javax.swing.JFrame {
         ChatBox.setRows(5);
         jScrollPane1.setViewportView(ChatBox);
 
+        messageTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                messageTextFieldKeyPressed(evt);
+            }
+        });
+
         SendButton.setText("Send");
         SendButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        SendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SendButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -235,7 +241,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(TypingFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(messageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                         .addComponent(SendButton)))
                 .addContainerGap())
@@ -248,7 +254,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TypingFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(messageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SendButton))
                 .addGap(0, 23, Short.MAX_VALUE))
         );
@@ -271,10 +277,25 @@ public class MainMenu extends javax.swing.JFrame {
         FriendList.setText("Friend List");
 
         RankList.setText("Rank List");
+        RankList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RankListActionPerformed(evt);
+            }
+        });
 
         LogOut.setText("Log Out");
+        LogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogOutActionPerformed(evt);
+            }
+        });
 
         Exit.setText("Exit");
+        Exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitActionPerformed(evt);
+            }
+        });
 
         BlitzMode.setText("Blitz");
 
@@ -298,10 +319,9 @@ public class MainMenu extends javax.swing.JFrame {
                         .addGap(94, 94, 94)))
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(BlitzMode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(NormalMode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ComputerMode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(CorrespondingMode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(NormalMode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ComputerMode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CorrespondingMode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(49, 49, 49)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -393,6 +413,57 @@ public class MainMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_ExitActionPerformed
+
+    private void LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogOutActionPerformed
+        try {
+            Play.socketHandle.write("offline," + Play.user.getID());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
+        Play.closeView(Play.View.MAIN_MENU);
+        Play.openView(Play.View.LOGIN);
+    }//GEN-LAST:event_LogOutActionPerformed
+
+    private void RankListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RankListActionPerformed
+        Play.openView(Play.View.RANK);
+    }//GEN-LAST:event_RankListActionPerformed
+
+    private void messageTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_messageTextFieldKeyPressed
+        if (evt.getKeyCode() == 10) {
+            sendMessage();
+        }
+    }//GEN-LAST:event_messageTextFieldKeyPressed
+
+    private void SendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendButtonActionPerformed
+        sendMessage();
+    }//GEN-LAST:event_SendButtonActionPerformed
+
+    private void sendMessage() {
+        try {
+            if (messageTextField.getText().isEmpty()) {
+                throw new Exception("Please enter the message!");
+            }
+            String temp = ChatBox.getText();
+            temp += "Me: " + messageTextField.getText() + "\n";
+            ChatBox.setText(temp);
+            Play.socketHandle.write("chat-server," + messageTextField.getText());
+            messageTextField.setText("");
+            ChatBox.setCaretPosition(ChatBox.getDocument().getLength());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
+    }
+    
+    public void addMessage(String message) {
+        String temp = ChatBox.getText();
+        temp += message + "\n";
+        ChatBox.setText(temp);
+        ChatBox.setCaretPosition(ChatBox.getDocument().getLength());
+    }
+    
     public void run(){
         this.setVisible(true);
     }
@@ -411,7 +482,6 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel Rate;
     private javax.swing.JLabel Score;
     private javax.swing.JButton SendButton;
-    private javax.swing.JTextField TypingFrame;
     private javax.swing.JLabel WinMatches;
     private javax.swing.JButton createRoom;
     private javax.swing.JButton findRoom;
@@ -434,6 +504,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton joinRoom;
+    private javax.swing.JTextField messageTextField;
     private javax.swing.JLabel totalMatches;
     private javax.swing.JLabel usernamePlayer;
     // End of variables declaration//GEN-END:variables

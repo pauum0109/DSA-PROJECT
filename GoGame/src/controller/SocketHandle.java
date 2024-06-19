@@ -109,12 +109,12 @@ public class SocketHandle implements Runnable {
 //                    Client.openView(Client.View.REGISTER);
 //                    JOptionPane.showMessageDialog(Client.registerFrm, "Tên tài khoản đã được người khác sử dụng");
 //                }
-//                //Xử lý nhận thông tin, chat từ toàn server
-//                if (messageSplit[0].equals("chat-server")) {
-//                    if (Client.homePageFrm != null) {
-//                        Client.homePageFrm.addMessage(messageSplit[1]);
-//                    }
-//                }
+                //Handle all chat in sever
+                if (messageSplit[0].equals("chat-server")) {
+                    if (Play.mainMenu != null) {
+                        Play.mainMenu.addMessage(messageSplit[1]);
+                    }
+                }
 //                //Xử lý hiển thị thông tin đối thủ là bạn bè/không
 //                if (messageSplit[0].equals("check-friend-response")) {
 //                    if (Client.competitorInfoFrm != null) {

@@ -2,6 +2,7 @@ package controller;
 
 import javax.swing.JFrame;
 import model.User;
+import model.core.Goban;
 import ui.*;
 
 /**
@@ -15,7 +16,16 @@ public class Play {
     public static MainMenu mainMenu;
     public static WaitingRoomStatus waitingRoomStatus;
     public static RoomList roomList;
+    public static CreateRoom createRoom;
+    public static JoinRoom joinRoom;
     public static JoinRoomPassword joinRoomPassword;
+    public static CompetitorInfo competitorInfo;
+    public static FriendList friendList;
+    public static FriendRequest friendRequest;
+    public static Rank rank;
+    public static ComputerPlayer computerPlayer;
+    public static MutiPlayer mutiPlayer;
+    public static AutoMatchStatus autoMatchStatus;
     public static Message  message;
     public static SocketHandle socketHandle;
     
@@ -29,23 +39,24 @@ public class Play {
         socketHandle = new SocketHandle();
         socketHandle.run();
     }
-//    public static JFrame getVisibleJFrame() {
-//        if (roomListFrm != null && roomListFrm.isVisible())
-//            return roomListFrm;
-//        if (friendListFrm != null && friendListFrm.isVisible()) {
-//            return friendListFrm;
-//        }
-//        if (createRoomPasswordFrm != null && createRoomPasswordFrm.isVisible()) {
-//            return createRoomPasswordFrm;
-//        }
-//        if (joinRoomPasswordFrm != null && joinRoomPasswordFrm.isVisible()) {
-//            return joinRoomPasswordFrm;
-//        }
-//        if (rankFrm != null && rankFrm.isVisible()) {
-//            return rankFrm;
-//        }
-//        return homePageFrm;
-//    }
+    
+    public static JFrame getVisibleJFrame() {
+        if (roomList != null && roomList.isVisible())
+            return roomList;
+        if (friendList != null && friendList.isVisible()) {
+            return friendList;
+        }
+        if (createRoom != null && createRoom.isVisible()) {
+            return createRoom;
+        }
+        if (joinRoomPassword != null && joinRoomPassword.isVisible()) {
+            return joinRoomPassword;
+        }
+        if (rank != null && rank.isVisible()) {
+            return rank;
+        }
+        return mainMenu;
+    }
 
     public static void openView(View viewName) {
         if (viewName != null) {
@@ -66,34 +77,34 @@ public class Play {
                     roomList = new RoomList();
                     roomList.setVisible(true);
                     break;
-//                case FRIEND_LIST:
-//                    friendListFrm = new FriendListFrm();
-//                    friendListFrm.setVisible(true);
-//                    break;
-//                case FIND_ROOM:
-//                    findRoomFrm = new FindRoomFrm();
-//                    findRoomFrm.setVisible(true);
-//                    break;
-//                case WAITING_ROOM:
-//                    waitingRoomFrm = new WaitingRoomFrm();
-//                    waitingRoomFrm.setVisible(true);
-//                    break;
-//
-//                case CREATE_ROOM_PASSWORD:
-//                    createRoomPasswordFrm = new CreateRoomPasswordFrm();
-//                    createRoomPasswordFrm.setVisible(true);
-//                    break;
-//                case RANK:
-//                    rankFrm = new RankFrm();
-//                    rankFrm.setVisible(true);
-//                    break;
-//                case GAME_AI:
-//                    gameAIFrm = new GameAIFrm();
-//                    gameAIFrm.setVisible(true);
-//                    break;
-//                case ROOM_NAME_FRM:
-//                    roomNameFrm = new RoomNameFrm();
-//                    roomNameFrm.setVisible(true);
+                case FRIEND_LIST:
+                    friendList = new FriendList();
+                    friendList.setVisible(true);
+                    break;
+                case FIND_ROOM:
+                    autoMatchStatus = new AutoMatchStatus();
+                    autoMatchStatus.setVisible(true);
+                    break;
+                case WAITING_ROOM:
+                    waitingRoomStatus = new WaitingRoomStatus();
+                    waitingRoomStatus.setVisible(true);
+                    break;
+
+                case CREATE_ROOM:
+                    createRoom = new CreateRoom();
+                    createRoom.setVisible(true);
+                    break;
+                case RANK:
+                    rank = new Rank();
+                    rank.setVisible(true);
+                    break;
+                case GAME_AI:
+                    computerPlayer = new ComputerPlayer();
+                    computerPlayer.setVisible(true);
+                    break;
+                case JOIN_ROOM:
+                    joinRoom = new JoinRoom();
+                    joinRoom.setVisible(true);
             }
         }
     }
@@ -101,30 +112,30 @@ public class Play {
     public static void openView(View viewName, int arg1, String arg2) {
         if (viewName != null) {
             switch (viewName) {
-                case JOIN_ROOM:
+                case JOIN_ROOM_PASSWORD:
                     joinRoomPassword = new JoinRoomPassword(arg1, arg2);
                     joinRoomPassword.setVisible(true);
                     break;
-//                case FRIEND_REQUEST:
-//                    friendRequestFrm = new FriendRequestFrm(arg1, arg2);
-//                    friendRequestFrm.setVisible(true);
+                case FRIEND_REQUEST:
+                    friendRequest = new FriendRequest(arg1, arg2);
+                    friendRequest.setVisible(true);
             }
         }
     }
 
-//    public static void openView(View viewName, User competitor, int room_ID, int isStart, String competitorIP) {
-//        if (viewName == View.GAME_CLIENT) {
-//            gameClientFrm = new GameClientFrm(competitor, room_ID, isStart, competitorIP);
-//            gameClientFrm.setVisible(true);
-//        }
-//    }
-//
-//    public static void openView(View viewName, User user) {
-//        if (viewName == View.COMPETITOR_INFO) {
-//            competitorInfoFrm = new CompetitorInfoFrm(user);
-//            competitorInfoFrm.setVisible(true);
-//        }
-//    }
+    public static void openView(View viewName, User competitor, int room_ID, int isStart, String competitorIP, Goban goban) {
+        if (viewName == View.GAME_PLAYER) {
+            mutiPlayer = new MutiPlayer(competitor, room_ID, isStart, competitorIP, goban);
+            mutiPlayer.setVisible(true);
+        }
+    }
+
+    public static void openView(View viewName, User user) {
+        if (viewName == View.COMPETITOR_INFO) {
+            competitorInfo = new CompetitorInfo(user);
+            competitorInfo.setVisible(true);
+        }
+    }
     
     public static void openView(View viewName, String arg1, String arg2) {
         if (viewName != null) {
@@ -152,48 +163,48 @@ public class Play {
                 case MAIN_MENU:
                     mainMenu.dispose();
                     break;
-//                case ROOM_LIST:
-//                    roomListFrm.dispose();
-//                    break;
-//                case FRIEND_LIST:
-//                    friendListFrm.stopAllThread();
-//                    friendListFrm.dispose();
-//                    break;
-//                case FIND_ROOM:
-//                    findRoomFrm.stopAllThread();
-//                    findRoomFrm.dispose();
-//                    break;
-//                case WAITING_ROOM:
-//                    waitingRoomFrm.dispose();
-//                    break;
-//                case GAME_CLIENT:
-//                    gameClientFrm.stopAllThread();
-//                    gameClientFrm.dispose();
-//                    break;
-//                case CREATE_ROOM_PASSWORD:
-//                    createRoomPasswordFrm.dispose();
-//                    break;
-//                case JOIN_ROOM_PASSWORD:
-//                    joinRoomPasswordFrm.dispose();
-//                    break;
-//                case COMPETITOR_INFO:
-//                    competitorInfoFrm.dispose();
-//                    break;
-//                case RANK:
-//                    rankFrm.dispose();
-//                    break;
-//                case GAME_NOTICE:
-//                    gameNoticeFrm.dispose();
-//                    break;
-//                case FRIEND_REQUEST:
-//                    friendRequestFrm.dispose();
-//                    break;
-//                case GAME_AI:
-//                    gameAIFrm.dispose();
-//                    break;
-//                case ROOM_NAME_FRM:
-//                    roomNameFrm.dispose();
-//                    break;
+                case ROOM_LIST:
+                    roomList.dispose();
+                    break;
+                case FRIEND_LIST:
+                    friendList.stopAllThread();
+                    friendList.dispose();
+                    break;
+                case FIND_ROOM:
+                    autoMatchStatus.stopAllThread();
+                    autoMatchStatus.dispose();
+                    break;
+                case WAITING_ROOM:
+                    waitingRoomStatus.dispose();
+                    break;
+                case GAME_PLAYER:
+                    mutiPlayer.stopAllThread();
+                    mutiPlayer.dispose();
+                    break;
+                case CREATE_ROOM:
+                    createRoom.dispose();
+                    break;
+                case JOIN_ROOM_PASSWORD:
+                    joinRoomPassword.dispose();
+                    break;
+                case COMPETITOR_INFO:
+                    competitorInfo.dispose();
+                    break;
+                case RANK:
+                    rank.dispose();
+                    break;
+                case MESSAGE:
+                    message.dispose();
+                    break;
+                case FRIEND_REQUEST:
+                    friendRequest.dispose();
+                    break;
+                case GAME_AI:
+                    computerPlayer.dispose();
+                    break;
+                case JOIN_ROOM:
+                    joinRoom.dispose();
+                    break;
             }
 
         }
@@ -203,28 +214,28 @@ public class Play {
         if (login!= null) login.dispose();
         if (register != null) register.dispose();
         if (mainMenu != null) mainMenu.dispose();
-//        if (roomListFrm != null) roomListFrm.dispose();
-//        if (friendListFrm != null) {
-//            friendListFrm.stopAllThread();
-//            friendListFrm.dispose();
-//        }
-//        if (findRoomFrm != null) {
-//            findRoomFrm.stopAllThread();
-//            findRoomFrm.dispose();
-//        }
-//        if (waitingRoomFrm != null) waitingRoomFrm.dispose();
-//        if (gameClientFrm != null) {
-//            gameClientFrm.stopAllThread();
-//            gameClientFrm.dispose();
-//        }
-//        if (createRoomPasswordFrm != null) createRoomPasswordFrm.dispose();
-//        if (joinRoomPasswordFrm != null) joinRoomPasswordFrm.dispose();
-//        if (competitorInfoFrm != null) competitorInfoFrm.dispose();
-//        if (rankFrm != null) rankFrm.dispose();
+        if (roomList != null) roomList.dispose();
+        if (friendList != null) {
+            friendList.stopAllThread();
+            friendList.dispose();
+        }
+        if (autoMatchStatus != null) {
+            autoMatchStatus.stopAllThread();
+            autoMatchStatus.dispose();
+        }
+        if (waitingRoomStatus != null) waitingRoomStatus.dispose();
+        if (mutiPlayer != null) {
+            mutiPlayer.stopAllThread();
+            mutiPlayer.dispose();
+        }
+        if (createRoom != null) createRoom.dispose();
+        if (joinRoomPassword != null) joinRoomPassword.dispose();
+        if (competitorInfo != null) competitorInfo.dispose();
+        if (rank != null) rank.dispose();
         if (message != null) message.dispose();
-//        if (friendRequestFrm != null) friendRequestFrm.dispose();
-//        if (gameAIFrm != null) gameAIFrm.dispose();
-//        if (roomNameFrm != null) roomNameFrm.dispose();
+        if (friendRequest != null) friendRequest.dispose();
+        if (computerPlayer != null) computerPlayer.dispose();
+        if (joinRoom != null) joinRoom.dispose();
     }
     
     public enum View{
@@ -237,12 +248,12 @@ public class Play {
         CREATE_ROOM,
         JOIN_ROOM,
         FRIEND_LIST,
-        GAME_CLIENT,
+        GAME_PLAYER,
         COMPETITOR_INFO,
         RANK,
         MESSAGE,
         FRIEND_REQUEST,
         GAME_AI,
-        ROOM_NAME
+        JOIN_ROOM_PASSWORD
     }
 }
