@@ -100,6 +100,7 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rankTextAreaMouseClicked"/>
           </Events>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()"/>
             <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Object[][] rows = {&#xa;};&#xa;String[] columns = {&quot;Username&quot;,&quot;Score&quot;,&quot;Rank&quot;};&#xa;DefaultTableModel model = new DefaultTableModel(rows, columns){&#xa;    @Override&#xa;    public Class&lt;?&gt; getColumnClass(int column){&#xa;        switch(column){&#xa;            case 0: return String.class;&#xa;            case 1: return String.class;&#xa;            case 2: return ImageIcon.class;&#xa;            default: return Object.class;&#xa;        }&#xa;    }&#xa;};"/>
           </AuxValues>
         </Component>

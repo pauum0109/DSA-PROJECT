@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
+import model.core.Goban;
 
 /**
  * @author Admin
@@ -26,21 +27,18 @@ public class SocketHandle implements Runnable {
 //        return friend;
 //    }
 
-//    public List<User> getListRank(String[] message) {
-//        List<User> friend = new ArrayList<>();
-//        for (int i = 1; i < message.length; i = i + 9) {
-//            friend.add(new User(Integer.parseInt(message[i]),
-//                    message[i + 1],
-//                    message[i + 2],
-//                    message[i + 3],
-//                    message[i + 4],
-//                    Integer.parseInt(message[i + 5]),
-//                    Integer.parseInt(message[i + 6]),
-//                    Integer.parseInt(message[i + 7]),
-//                    Integer.parseInt(message[i + 8])));
-//        }
-//        return friend;
-//    }
+    public List<User> getListRank(String[] message) {
+        List<User> friend = new ArrayList<>();
+        for (int i = 1; i < message.length; i = i + 9) {
+            friend.add(new User(Integer.parseInt(message[i]),
+                    message[i + 1],
+                    message[i + 2],
+                    Integer.parseInt(message[i + 3]),
+                    Integer.parseInt(message[i + 4]),
+                    Integer.parseInt(message[i + 5])));
+        }
+        return friend;
+    }
 
     public User getUserFromString(int start, String[] message) {
         System.out.println(message);
@@ -139,12 +137,12 @@ public class SocketHandle implements Runnable {
 //                    Client.openView(Client.View.HOMEPAGE);
 //                    JOptionPane.showMessageDialog(Client.homePageFrm, "Mật khẩu phòng sai");
 //                }
-//                //Xử lý xem rank
-//                if (messageSplit[0].equals("return-get-rank-charts")) {
-//                    if (Client.rankFrm != null) {
-//                        Client.rankFrm.setDataToTable(getListRank(messageSplit));
-//                    }
-//                }
+                //Handle rank list
+                if (messageSplit[0].equals("return-get-rank-charts")) {
+                    if (Play.rank != null) {
+                        Play.rank.setDataToTable(getListRank(messageSplit));
+                    }
+                }
 //                //Xử lý lấy danh sách phòng
 //                if (messageSplit[0].equals("room-list")) {
 //                    Vector<String> rooms = new Vector<>();
@@ -160,39 +158,41 @@ public class SocketHandle implements Runnable {
 //                        Client.friendListFrm.updateFriendList(getListUser(messageSplit));
 //                    }
 //                }
-//                if (messageSplit[0].equals("go-to-room")) {
-//                    System.out.println("Vào phòng");
-//                    int roomID = Integer.parseInt(messageSplit[1]);
-//                    String competitorIP = messageSplit[2];
-//                    int isStart = Integer.parseInt(messageSplit[3]);
-//
-//                    User competitor = getUserFromString(4, messageSplit);
-//                    if (Client.findRoomFrm != null) {
-//                        Client.findRoomFrm.showFoundRoom();
-//                        try {
-//                            Thread.sleep(3000);
-//                        } catch (InterruptedException ex) {
-//                            JOptionPane.showMessageDialog(Client.findRoomFrm, "Lỗi khi sleep thread");
-//                        }
-//                    } else if (Client.waitingRoomFrm != null) {
-//                        Client.waitingRoomFrm.showFoundCompetitor();
-//                        try {
-//                            Thread.sleep(3000);
-//                        } catch (InterruptedException ex) {
-//                            JOptionPane.showMessageDialog(Client.waitingRoomFrm, "Lỗi khi sleep thread");
-//                        }
-//                    }
-//                    Client.closeAllViews();
-//                    System.out.println("Đã vào phòng: " + roomID);
-//                    //Xử lý vào phòng
-//                    Client.openView(Client.View.GAME_CLIENT
-//                            , competitor
-//                            , roomID
-//                            , isStart
-//                            , competitorIP);
-//                    Client.gameClientFrm.newgame();
-//                }
-                //Create room
+                // Automatch
+                if (messageSplit[0].equals("go-to-room")) {
+                    System.out.println("Join room");
+                    int roomID = Integer.parseInt(messageSplit[1]);
+                    String competitorIP = messageSplit[2];
+                    int isStart = Integer.parseInt(messageSplit[3]);
+
+                    User competitor = getUserFromString(4, messageSplit);
+                    if (Play.autoMatchStatus != null) {
+                        Play.autoMatchStatus.showFoundRoom();
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ex) {
+                            JOptionPane.showMessageDialog(Play.autoMatchStatus, "Error");
+                        }
+                    } else if (Play.waitingRoomStatus != null) {
+                        Play.waitingRoomStatus.showFoundCompetitor();
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ex) {
+                            JOptionPane.showMessageDialog(Play.waitingRoomStatus, "Error");
+                        }
+                    }
+                    Play.closeAllViews();
+                    System.out.println("Joined: " + roomID);
+                    
+                    //Joined
+                    Play.openView(Play.View.GAME_PLAYER
+                            , competitor
+                            , roomID
+                            , isStart
+                            , competitorIP);
+                    Play.mutiPlayer.newgame();
+                }
+                //Handle create room
                 if (messageSplit[0].equals("your-created-room")) {
                     Play.closeAllViews();
                     Play.openView(Play.View.WAITING_ROOM);

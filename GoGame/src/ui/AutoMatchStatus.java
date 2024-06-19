@@ -24,6 +24,13 @@ public class AutoMatchStatus extends javax.swing.JFrame {
         timer.stop();
     }
     
+    public void showFoundRoom() {
+        found = true;
+        timer.stop();
+        foundLabel.setVisible(true);
+        findingLabel.setVisible(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,8 +44,8 @@ public class AutoMatchStatus extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        findingLabel = new javax.swing.JLabel();
+        foundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,12 +78,12 @@ public class AutoMatchStatus extends javax.swing.JFrame {
 
         jButton1.setText("Loading");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        jLabel3.setText("Finding...");
+        findingLabel.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        findingLabel.setText("Finding...");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Found, start to join room");
+        foundLabel.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        foundLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        foundLabel.setText("Found, start to join room");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,8 +105,8 @@ public class AutoMatchStatus extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGap(64, 64, 64)
-                            .addComponent(jLabel3))
-                        .addComponent(jLabel4)))
+                            .addComponent(findingLabel))
+                        .addComponent(foundLabel)))
                 .addContainerGap(145, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -109,9 +116,9 @@ public class AutoMatchStatus extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
+                .addComponent(findingLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(foundLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
@@ -122,11 +129,11 @@ public class AutoMatchStatus extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel findingLabel;
+    private javax.swing.JLabel foundLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

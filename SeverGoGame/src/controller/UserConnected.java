@@ -276,7 +276,7 @@ public class UserConnected extends Connected{
         try {
             PreparedStatement preparedStatement = connect.prepareStatement("SELECT *\n"
                     + "FROM user\n"
-                    + "ORDER BY(user.NumberOfGame+user.numberOfDraw*5+user.NumberOfWin*10) DESC\n"
+                    + "ORDER BY(user.NumberOfWin*10) DESC\n"
                     + "LIMIT 8");
             System.out.println(preparedStatement);
             ResultSet rs = preparedStatement.executeQuery();
@@ -294,6 +294,7 @@ public class UserConnected extends Connected{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println(list);
         return list;
     }
 

@@ -130,12 +130,13 @@ public class User {
     private boolean playing;
     private int rank;
     
-    public User(int ID, String username, String password, String nickname, String avatar, int numberOfGame, int numberOfWin, int numberOfDraw) {
+    public User(int ID, String username, String password, int cntGame, int cntWin, int rank) {
         this.ID = ID;
         this.username = username;
         this.password = password;
-        this.cntGame = numberOfGame;
-        this.cntWin = numberOfWin;
+        this.cntGame = cntGame;
+        this.cntWin = cntWin;
+        this.rank = rank;
     }
     
     public User(int ID, String username, String password, int cntGame, int cntWin){

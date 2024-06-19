@@ -263,8 +263,18 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         createRoom.setText("Create Room");
+        createRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createRoomActionPerformed(evt);
+            }
+        });
 
         joinRoom.setText("Join Room");
+        joinRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                joinRoomActionPerformed(evt);
+            }
+        });
 
         findRoom.setText("Find Room");
 
@@ -440,6 +450,25 @@ public class MainMenu extends javax.swing.JFrame {
     private void SendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendButtonActionPerformed
         sendMessage();
     }//GEN-LAST:event_SendButtonActionPerformed
+
+    private void createRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRoomActionPerformed
+        int res = JOptionPane.showConfirmDialog(rootPane, "Do you want to create room with password?", "Create room", JOptionPane.YES_NO_OPTION);
+        if (res == JOptionPane.YES_OPTION) {
+            Play.closeView(Play.View.MAIN_MENU);
+            Play.openView(Play.View.CREATE_ROOM);
+        } else if (res == JOptionPane.NO_OPTION) {
+            try {
+                Play.socketHandle.write("create-room,");
+                Play.closeView(Play.View.MAIN_MENU);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_createRoomActionPerformed
+
+    private void joinRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinRoomActionPerformed
+        Play.openView(Play.View.JOIN_ROOM);
+    }//GEN-LAST:event_joinRoomActionPerformed
 
     private void sendMessage() {
         try {

@@ -457,11 +457,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Room"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createRoomActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="joinRoom">
           <Properties>
             <Property name="text" type="java.lang.String" value="Join Room"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="joinRoomActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="findRoom">
           <Properties>

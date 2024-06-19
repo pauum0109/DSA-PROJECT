@@ -273,7 +273,7 @@ public class ServerThread implements Runnable{
                 if (messageSplit[0].equals("create-room")) {
                     room = new Room(this);
                     if (messageSplit.length == 2) {
-                        getRoom().setPassword(messageSplit[2]);
+                        room.setPassword(messageSplit[1]);
                         write("your-created-room," + getRoom().getId() + "," + messageSplit[1]);
                         System.out.println("Create sucessfull, password is " + messageSplit[1]);
                     } 
@@ -337,14 +337,14 @@ public class ServerThread implements Runnable{
                     this.setRoom(null);
                 }
                 
-                //Invite the other player into room
+                //Join room
                 if (messageSplit[0].equals("join-room")) {
                     int ID_room = Integer.parseInt(messageSplit[1]);
                     for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
                         if (serverThread.getRoom() != null && serverThread.getRoom().getId() == ID_room) {
                             serverThread.getRoom().setUser2(this);
                             this.setRoom(serverThread.getRoom());
-                            System.out.println("Đã vào phòng " + getRoom().getId());
+                            System.out.println("Joined" + getRoom().getId());
                             getRoom().increaseNumberOfGame();
                             goToPartnerRoom();
                             userConnected.updateToPlaying(this.getUser().getID());

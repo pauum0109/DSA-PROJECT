@@ -123,9 +123,9 @@ public class Play {
         }
     }
 
-    public static void openView(View viewName, User competitor, int room_ID, int isStart, String competitorIP, Goban goban) {
+    public static void openView(View viewName, User competitor, int room_ID, int isStart, String competitorIP) {
         if (viewName == View.GAME_PLAYER) {
-            mutiPlayer = new MutiPlayer(competitor, room_ID, isStart, competitorIP, goban);
+            mutiPlayer = new MutiPlayer(competitor, room_ID, isStart, competitorIP);
             mutiPlayer.setVisible(true);
         }
     }

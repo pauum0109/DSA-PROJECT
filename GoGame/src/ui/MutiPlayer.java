@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Random;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -34,8 +36,6 @@ public class MutiPlayer extends javax.swing.JFrame {
     public static final int TOKEN_INITIAL_SIZE = 35;
     private final User competitor;
     private final String competitorIP;
-    private Goban goban;
-    private Scorer scorer;
     private int userWin;
     private int competitorWin;
     private boolean isSending;
@@ -44,19 +44,22 @@ public class MutiPlayer extends javax.swing.JFrame {
     private Integer second;
     private Integer minute;
     private int numberOfMatch;
+    private GUI goGameGUI;
+    private Goban goban;
     
-    public MutiPlayer(User competitor, int roomID, int isStart, String competitorIP, Goban goban) {
+    
+    public MutiPlayer(User competitor, int roomID, int isStart, String competitorIP) {
         initComponents();
         this.setTitle("Go Game");
         this.setIconImage(new ImageIcon("/resources/logo.png").getImage());
         this.setResizable(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.getContentPane().setLayout(null);
-        
+        goban = new Goban(13,13, 5);
+        goGameGUI = new GUI(goban);
+        gamePanel.add(goGameGUI.getContentPane());
         this.competitor = competitor;
         this.competitorIP = competitorIP;
-        this.goban = goban;
-        this.scorer = new Scorer(goban);
 
         isSending = false;
         isListening = false;
@@ -133,13 +136,52 @@ public class MutiPlayer extends javax.swing.JFrame {
     public Goban getGoban() {
         return goban;
     }
-
-    public Scorer getScorer() {
-        return scorer;
+    
+    public void startTimer() {
+        countDownLabel.setVisible(true);
+        second = 60;
+        minute = 0;
+        timer.start();
+    }
+    
+    public void displayCompetitorTurn() {
+        countDownLabel.setVisible(false);
+        competitorTurnLabel.setVisible(true);
+        competitorPosButton.setVisible(true);
+        playerTurnLabel.setVisible(false);
+        loseRequestButton.setVisible(false);
+        playerPosButton.setVisible(false);
     }
 
-    public void initScorer() {
-        scorer.init();
+    public void displayUserTurn() {
+        countDownLabel.setVisible(false);
+        competitorTurnLabel.setVisible(false);
+        competitorPosButton.setVisible(false);
+        playerTurnLabel.setVisible(true);
+        loseRequestButton.setVisible(true);
+        playerPosButton.setVisible(true);
+    }
+    
+    public void newgame() {
+        Random random = new Random();
+        int randNum = random.nextInt();
+        if (randNum % 2 == 0) {
+            JOptionPane.showMessageDialog(rootPane, "You go first");
+            startTimer();
+            displayUserTurn();
+            countDownLabel.setVisible(true);
+            playerPosButton.setIcon(new ImageIcon("/resources/black.png"));
+            competitorPosButton.setIcon(new ImageIcon("/resources/white.png"));
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "The competitor goes first");
+            displayCompetitorTurn();
+            playerPosButton.setIcon(new ImageIcon("/resources/white.png"));
+            competitorPosButton.setIcon(new ImageIcon("/resources/black.png"));
+        }
+//        goban = new Goban(13,13, 5);
+//        goGameGUI = new GUI(goban);
+//        gamePanel.add(goGameGUI.getContentPane());
+        numberOfMatch++;
     }
         
     /**
@@ -338,7 +380,7 @@ public class MutiPlayer extends javax.swing.JFrame {
         scoreLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         scoreLabel.setText("0 - 0");
 
-        loseRequestButton.setText("Lose");
+        loseRequestButton.setText("Resignation");
         loseRequestButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loseRequestButtonActionPerformed(evt);
@@ -494,7 +536,7 @@ public class MutiPlayer extends javax.swing.JFrame {
         gamePanel.setLayout(gamePanelLayout);
         gamePanelLayout.setHorizontalGroup(
             gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 563, Short.MAX_VALUE)
+            .addGap(0, 462, Short.MAX_VALUE)
         );
         gamePanelLayout.setVerticalGroup(
             gamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,8 +625,9 @@ public class MutiPlayer extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(gamePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(gamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -717,48 +760,7 @@ public class MutiPlayer extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_saveItemActionPerformed
-    
    
-    
-    
-
-   
-
-   
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NewJFrame().setVisible(true);
-            }
-        });
-    }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
